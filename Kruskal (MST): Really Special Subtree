@@ -1,0 +1,74 @@
+//Kruskal (MST): Really Special Subtree
+#include <bits/stdc++.h>
+#define MAX 3000
+using namespace std;
+typedef pair<long int, pair<int , int> > p;
+vector< p > v;
+int Arr[MAX];
+long min1;
+int nodes , edges;
+
+bool comp(pair<long int, pair<int , int> > &a, pair<long int, pair<int , int> > &b){
+    int u=a.second.first;
+    int v=a.second.second;
+    int weight=a.first;
+    int u1=b.second.first;
+    int v1=b.second.second;
+    int weight1=b.first;
+        return (a < b);
+    if(a==b){
+        if(u+v+weight > u1+v1+weight1)
+            return (b>a);
+        else return (a>b);}
+}
+
+int root(int i)
+{
+    while(Arr[ i ] != i)
+     i = Arr[ i ];
+    return i;
+}
+
+void union1(int A ,int B)
+{
+    int root_A = root(A);       
+    int root_B = root(B);  
+    Arr[ root_A ] = root_B ;
+}
+
+void kruskal(){
+    queue<p> Q;
+    min1=0;
+    
+    for(int i=0;i<edges;i++)
+    Q.push(v[i]);
+    
+    while(!Q.empty()){
+        p x = Q.front();
+        Q.pop();
+        int u=x.second.first;
+        int v=x.second.second;
+        int weight=x.first;
+        if(root(u)!=root(v)){
+            union1(u,v);
+            min1=min1+weight;
+        }
+    }
+}
+
+int main() {
+    cin >> nodes >> edges ;
+    
+    for(int i=0;i<=nodes;i++)
+        Arr[i]=i;
+    
+    for(int i=0; i<edges; i++){
+        int x, y, w;
+        cin >> x >> y >> w;
+        v.push_back(make_pair(w, make_pair(x,y)));
+    }
+    sort(v.begin() , v.end() , comp);
+    kruskal();
+    cout << min1 << endl;
+    return 0;
+}
