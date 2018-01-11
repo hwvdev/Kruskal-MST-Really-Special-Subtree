@@ -1,0 +1,42 @@
+// using backtracking
+//check if there is a path more than k length
+
+#include<bits/stdc++.h>
+using namespace std;
+typedef pair<int, int > p;
+vector<p > v[15];
+bool visited[15];
+
+bool dfs(int u, int k, int dist){
+	visited[u]=true;
+	
+	if(dist>=k)
+	return true;
+	
+	vector<p>::iterator i;
+	for(i=v[u].begin();i!=v[u].end();i++){
+		if(!visited[(*i).first]&&dfs((*i).first , k , dist+(*i).second))
+		return true;
+	}
+	visited[u]=false;
+	return false;
+}
+
+int main(){
+	int n=9;
+	int e=28;
+	int x[]={0,0,1,1,1,2,2,2,2,3,3,3,4,4,5,5,5,5,6,6,6,7,7,7,7,8,8,8};
+	int y[]={1,7,0,7,2,1,8,5,3,2,5,4,3,5,4,3,2,6,7,8,5,0,1,8,6,2,7,6};
+	int w[]={4,8,4,11,8,8,2,4,7,7,14,9,9,10,10,14,4,2,1,6,2,8,11,7,1,2,7,6};
+	for(int i=0;i<e;i++)
+	v[x[i]].push_back(make_pair(y[i], w[i]));
+	
+	for(int i=0;i<n;i++)
+	visited[i]=false;
+	
+	int src=0;int k=62;
+	int dist=0;
+	if(dfs(src,k,dist))
+	cout << "found";
+	else cout << "not found";
+}
