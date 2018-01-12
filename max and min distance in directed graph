@@ -1,0 +1,78 @@
+// max and min dist in directed graph using topological sorting
+#include<bits/stdc++.h>
+using namespace std;
+
+typedef pair<int , int> p;
+vector<p> vec[15];
+stack<int> s;
+bool visited[15];
+int nodes=6;
+int min_dist[15];
+int max_dist[15];
+
+void topological_sort(int src){
+	visited[src]=true;
+	vector<p> :: iterator i;
+	for(i=vec[src].begin(); i!=vec[src].end();i++)
+	if(visited[(*i).first]==false)
+	topological_sort((*i).first);
+	s.push(src);	
+}
+
+void _path(int src){
+	for(int i=1;i<=nodes;i++){
+	max_dist[i]=INT_MIN;
+	min_dist[i]=INT_MAX;
+	}
+	max_dist[src]=0;
+	min_dist[src]=0;
+  
+	while(!s.empty()){
+		src=s.top();
+		s.pop();
+		vector<p> :: iterator i;
+		for(i=vec[src].begin(); i!=vec[src].end(); i++){
+			
+			if(min_dist[src]!=INT_MAX && min_dist[(*i).first] > min_dist[src] + (*i).second )
+			min_dist[(*i).first]=min_dist[src] + (*i).second;
+			
+			if(max_dist[src]!=INT_MIN && max_dist[(*i).first] < max_dist[src] + (*i).second )
+			max_dist[(*i).first]=max_dist[src] + (*i).second;
+		}
+	}
+}
+
+int main(){
+	
+	int x[]={1,1,2,2,3,3,3,4,4,5};
+	int y[]={2,3,4,3,5,6,4,5,6,6};
+	int w[]={5,3,6,2,4,2,7,-1,1,-2};
+	int n=sizeof(x)/sizeof(x[0]);
+	
+	for(int i=0;i<n;i++)
+	vec[x[i]].push_back(make_pair(y[i],w[i]));
+	
+	for(int i=1;i<=nodes;i++)
+	visited[i]=false;
+	
+	for(int i=1;i<=nodes;i++){
+		if(visited[i]==false)
+		topological_sort(i);
+	}
+	
+	int src=2;
+	_path(src);
+	
+	for(int i=1;i<=nodes;i++)
+  if(min_dist[i]==INT_MAX)
+  cout << "inf" << " ";
+  else
+	cout << min_dist[i] << " ";
+	cout << endl;
+  
+	for(int i=1;i<=nodes;i++)
+	if(max_dist[i]==INT_MIN)
+  cout << "-inf" << " ";
+  else
+  cout << max_dist[i] << " ";
+}
