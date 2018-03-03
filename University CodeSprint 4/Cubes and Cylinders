@@ -1,0 +1,75 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct pair1{
+    int S;
+    int K;
+};
+
+struct pair2{
+    int R;
+    int C;
+};
+
+bool comp1(pair1 v1, pair1 v2){
+    return (v1.S < v2.S );
+}
+
+bool comp2(pair2 v1, pair2 v2){
+    return (v1.R < v2.R );
+}
+
+int maxPackage(struct pair1 cube[], struct pair2 cont[], int n, int m){
+    sort(cube, cube+n, comp1);
+    sort(cont, cont+m, comp2);
+    
+    int i=0,j=0;
+    
+    int S1=0, S2=0;
+    for(int i=0;i<n;i++)
+        S1=S1+cube[i].K;
+    
+    while(i<n && j<m){
+        if(sqrt(2)*1.0*(cube[i].S) < 2*cont[j].R){
+            if(cube[i].K >= cont[j].C){
+                cube[i].K -= cont[j].C;
+                cont[j].C=0;
+                j++;
+            }
+            else{
+                cont[j].C -= cube[i].K;
+                cube[i].K=0;
+                i++;
+            }
+        }
+        else j++;
+    }
+    
+    for(int i=0;i<n;i++)
+        S2=S2+cube[i].K;
+    
+    return S1-S2;
+}
+
+int main() {
+    int n,m;
+    cin >> n >> m;
+    
+    pair1 cube[n];
+    pair2 cont[m];
+
+    for(int i=0;i<n;i++)
+        cin >> cube[i].S;
+    for(int i=0;i<n;i++)
+        cin >> cube[i].K;
+    
+    for(int i=0;i<m;i++)
+        cin >> cont[i].R;
+    for(int i=0;i<m;i++)
+        cin >> cont[i].C;
+    
+    int res=maxPackage(cube, cont, n, m);
+    cout << res << endl;
+    
+    return 0;
+}
