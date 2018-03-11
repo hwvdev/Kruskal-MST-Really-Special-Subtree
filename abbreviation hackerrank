@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+string abbreviation(string a, string b) {
+    int na=a.size();
+    int nb=b.size();
+    
+    bool dp[nb+1][na+1];
+    memset(dp,false,sizeof(dp));
+    
+    for(int i=1;i<=na;i++)
+        if(islower(a[i-1]))
+            dp[0][i]=true;
+        else break;
+    dp[0][0]=true;
+    
+    for(int i=1;i<=nb;i++){
+        for(int j=1;j<=na;j++){
+            if(isupper(a[j-1]))
+            if(b[i-1]==a[j-1] && dp[i-1][j-1])
+                dp[i][j]=dp[i-1][j-1];
+            else dp[i][j]=false;
+            else{
+               if(toupper(a[j-1])==b[i-1] && dp[i-1][j-1])
+                   dp[i][j]=true;
+                else dp[i][j]=dp[i][j-1];
+            }
+            
+        }
+    }
+    /*
+    for(int i=0;i<=nb;i++){
+        for(int j=0;j<=na;j++){
+     cout<< dp[i][j]<<" ";
+        }cout <<endl;
+    }*/
+    
+    if(dp[nb][na])
+       return "YES";
+     return "NO";
+}
+
+int main() {
+    int q;
+    cin >> q;
+    for(int a0 = 0; a0 < q; a0++){
+        string a;
+        cin >> a;
+        string b;
+        cin >> b;
+        string result = abbreviation(a, b);
+        cout << result << endl;
+    }
+    return 0;
+}
