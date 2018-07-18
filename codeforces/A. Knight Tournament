@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+#define fi first
+#define se second
+#define PII pair<int,int>
+#define PIII pair<pair<int,int>, int>
+#define MII unordered_map<int, int>
+#define SIZE 300000
+#define sii set<PII>
+#define si set<int>
+using namespace std;
+
+int main(){
+	int n,m;
+	cin >> n >> m;
+	si s1;
+	sii s2;
+	
+	for(int i=1;i<=n;i++)
+	s1.insert(i);
+	
+	while(m--){
+		int l, r, x;
+		cin >> l >> r >> x;
+		auto it=s1.lower_bound(l);
+		
+		for(;it!=s1.end() && *it<=r;it++){
+			if(*it!=x && *it>=l)
+			s2.insert({*it,x});
+		}
+		s1.erase(s1.lower_bound(l), s1.upper_bound(r));
+		s1.insert(x);
+	}
+	auto it=s2.begin();
+	for(int i=1; i<=n && it!=s2.end(); i++, it++){
+	if((*it).first!=i){
+		s2.insert({i,0});
+		break;
+		}	
+	}
+	if(s2.size()!=n)
+	s2.insert({n,0});
+	
+	for(auto it=s2.begin(); it!=s2.end(); it++)
+	cout << (*it).second << " ";
+	cout << endl;
+	
+}
