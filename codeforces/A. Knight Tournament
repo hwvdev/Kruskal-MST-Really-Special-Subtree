@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+
+ #include <bits/stdc++.h>
 #define fi first
 #define se second
 #define PII pair<int,int>
@@ -10,38 +11,26 @@
 using namespace std;
 
 int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
 	int n,m;
 	cin >> n >> m;
 	si s1;
 	sii s2;
-	
 	for(int i=1;i<=n;i++)
 	s1.insert(i);
-	
 	while(m--){
 		int l, r, x;
 		cin >> l >> r >> x;
-		auto it=s1.lower_bound(l);
-		
-		for(;it!=s1.end() && *it<=r;it++){
+		for(auto it=s1.lower_bound(l);it!=s1.end() && *it<=r;it++)
 			if(*it!=x && *it>=l)
 			s2.insert({*it,x});
-		}
 		s1.erase(s1.lower_bound(l), s1.upper_bound(r));
 		s1.insert(x);
 	}
 	auto it=s2.begin();
-	for(int i=1; i<=n && it!=s2.end(); i++, it++){
-	if((*it).first!=i){
-		s2.insert({i,0});
-		break;
-		}	
-	}
-	if(s2.size()!=n)
-	s2.insert({n,0});
-	
-	for(auto it=s2.begin(); it!=s2.end(); it++)
-	cout << (*it).second << " ";
+	for(int i=1; i<=n; i++)
+	(*it).fi==i ? cout<<(*it++).se<<" " : cout<<0<<" ";
 	cout << endl;
 	
 }
